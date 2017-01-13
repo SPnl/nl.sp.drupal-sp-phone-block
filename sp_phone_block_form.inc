@@ -151,7 +151,7 @@ function sp_phone_block_form_validate($form, &$form_state) {
       if (!empty($mail_error)) {
         form_set_error('email', 'Vul een geldig e-mail adres in. Als het adres geldig is, maar desondanks niet geaccepteerd wordt, neem dan contact op met webmaster@sp.nl.');
       }
-      elseif (sp_phone_block_email_blocked_number($values['email']) >= 2) {
+      elseif (sp_phone_block_email_blocked_number($values['email']) > 2) {
         form_set_error('email', 'Er is een fout opgetreden, neem contact op met webmaster@sp.nl om u af te melden voor het bellen.');
         $from = variable_get('sp_phone_block_email_from',  $site_mail);
         $params = $storage;

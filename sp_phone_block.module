@@ -16,6 +16,12 @@ function sp_phone_block_menu() {
     'access callback' => TRUE,
   );
 
+  $items['nietmeerbellen'] = array(
+    'title' => 'Bel mij niet meer',
+    'page callback' => 'sp_phone_block_redirect',
+    'access callback' => TRUE,
+  );
+
   $items['admin/config/sp/phone_block'] = array(
     'title' => 'SP phone block',
     'description' => 'SP phone block instellingen.',

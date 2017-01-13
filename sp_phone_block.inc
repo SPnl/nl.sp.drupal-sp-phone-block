@@ -140,3 +140,7 @@ function sp_phone_block_log($accounts, $phonenumber) {
   }
   return $result;
 }
+
+function sp_phone_block_redirect() {
+  drupal_goto('/niet-meer-bellen');
+}

@@ -196,8 +196,7 @@ function sp_phone_block_form_submit($form, &$form_state) {
           // Mobile phone.
           $storage['send_code_to'] = 'mobile';
           // Send code.
-          //$result = sp_phone_block_send_code_sms($code, $storage['phonenumber']);
-          $result = TRUE;
+          $result = sp_phone_block_send_code_sms($code, $storage['phonenumber']);
           if ($result === FALSE) {
             $storage['send_code_to'] = 'email';
           }

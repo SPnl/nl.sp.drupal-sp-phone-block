@@ -24,15 +24,18 @@ function sp_phone_block_get_civi_accounts($phonenumber) {
   $params = array(
     'option.limit'          => 9999,
     'phone_numeric' => array('LIKE' => '%' . $phonepart),
+    'options' => array('limit' => 10),
   );
   $data = array();
   $results = $spcivi->api('Phone', 'get', $params);
   if (sp_phone_block_check_result($results, 'contacten met telefoonnummer', 'get', $params)) {
     if (!empty($results['values'])) {
-      foreach ($results['values'] as $value) {
-        $data[] = $value['contact_id'];
+      if ($results['count'] < 10) {
+        foreach ($results['values'] as $value) {
+          $data[] = $value['contact_id'];
+        }
+        return $data;
       }
-      return $data;
     }
   }
   return FALSE;

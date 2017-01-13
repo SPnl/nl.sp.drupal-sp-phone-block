@@ -2,11 +2,15 @@
 
 function sp_phone_block_form($form, &$form_state) {
 
+  $form = array();
+
   if (!empty($form_state['storage'])) {
     $storage = &$form_state['storage'];
+    //$form['test'] = array(
+    //  '#markup' => '<pre>'.print_r($storage, TRUE).'</pre>',
+    //);
   }
 
-  $form = array();
   $form['#prefix'] = '<div id="sp-phone-block-ajax-form">';
   $form['#suffix'] = '</div>';
 
@@ -78,7 +82,7 @@ function sp_phone_block_form($form, &$form_state) {
     empty($storage['code_ok'])
   ) {
     $trans = array(
-      'phone' => 'mobile',
+      'mobile' => 'sms',
       'email' => 'email',
     );
 
@@ -192,7 +196,8 @@ function sp_phone_block_form_submit($form, &$form_state) {
           // Mobile phone.
           $storage['send_code_to'] = 'mobile';
           // Send code.
-          $result = sp_phone_block_send_code_sms($code, $storage['phonenumber']);
+          //$result = sp_phone_block_send_code_sms($code, $storage['phonenumber']);
+          $result = TRUE;
           if ($result === FALSE) {
             $storage['send_code_to'] = 'email';
           }

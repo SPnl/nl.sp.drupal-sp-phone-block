@@ -1,0 +1,5 @@
+name = SP phone block
+description = Adds form where contacts can enter credentials to get their phone number blocked.
+core = 7.x
+package = sprbs
+dependencies[] = elements

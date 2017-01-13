@@ -1,0 +1,82 @@
+<?php
+
+  module_load_include("inc", "sp_phone_block", "sp_phone_block");
+
+/**
+ * Implements hook_menu().
+ */
+function sp_phone_block_menu() {
+  $items = array();
+
+  $items['niet-meer-bellen'] = array(
+    'title' => 'Bel mij niet meer',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('sp_phone_block_form'),
+    'file' => 'sp_phone_block_form.inc',
+    'access callback' => TRUE,
+  );
+
+  $items['admin/config/sp/phone_block'] = array(
+    'title' => 'SP phone block',
+    'description' => 'SP phone block instellingen.',
+    'position' => 'right',
+    'weight' => -20,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('sp_phone_block_general_settings_form'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer access control'),
+    'file' => 'sp_phone_block_settings_form.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  $items['admin/config/sp/phone_block/general'] = array(
+    'title' => 'SP phone block algemene instellingen',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('sp_phone_block_general_settings_form'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer access control'),
+    'file' => 'sp_phone_block_settings_form.inc',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  $items['admin/config/sp/phone_block/texts'] = array(
+    'title' => 'SP phone block tekst instellingen',
+    'description' => 'Stel de feedbackteksten e.d. in.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('sp_phone_block_text_settings_form'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer access control'),
+    'file' => 'sp_phone_block_settings_form.inc',
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  return $items; 
+}
+
+/**
+ * Implements hook_entity_info().
+ */
+function sp_phone_block_entity_info() {
+  $info = array();
+  $info['attempt'] = array(
+    'label' => 'SP Phone block attempt',
+    'entity class' => 'Entity',
+    'controller class' => 'EntityAPIController',
+    'base table' => 'sp_phone_block_attempt',
+    'entity keys' => array(
+      'id' => 'id',
+    ),
+    'fieldable' => FALSE,
+  );
+
+  return $info;
+}
+
+function sp_phone_block_mail($key, &$message, $params) {
+  switch ($key) {
+  case 'code_message':
+    $message['subject'] = $params['subject'];
+    $message['body'][] = $params['body'];
+    break;
+  }
+}

@@ -76,6 +76,12 @@ function sp_phone_block_schema() {
         'length' => 255,
         'not null' => TRUE,
       ),
+      'email' => array(
+        'description' => 'Email address.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
       'contact_id' => array(
         'description' => 'Primary key.',
         'type' => 'int',

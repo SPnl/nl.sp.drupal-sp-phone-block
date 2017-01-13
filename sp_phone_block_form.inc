@@ -151,7 +151,15 @@ function sp_phone_block_form_validate($form, &$form_state) {
       if (!empty($mail_error)) {
         form_set_error('email', 'Vul een geldig e-mail adres in. Als het adres geldig is, maar desondanks niet geaccepteerd wordt, neem dan contact op met webmaster@sp.nl.');
       }
-
+      elseif (sp_phone_block_email_blocked_number($values['email']) >= 2) {
+        form_set_error('email', 'Er is een fout opgetreden, neem contact op met webmaster@sp.nl om u af te melden voor het bellen.');
+        $from = variable_get('sp_phone_block_email_from',  $site_mail);
+        $params = $storage;
+        global $base_url;
+        $params['site'] = $base_url;
+        $params['email'] = $values['email'];
+        drupal_mail('sp_phone_block', 'max_block', 'webmaster@sp.nl', language_default(), $params, $from);
+      }
       break;
     case 'submit_code':
       $values['code'] = trim($values['code']);
@@ -240,7 +248,8 @@ function sp_phone_block_form_submit($form, &$form_state) {
     case 'submit_code':
       if ($values['code'] == $storage['code']) {
         if (sp_phone_block_block_phone($storage['accounts'])) {
-          sp_phone_block_log($storage['accounts'], $storage['phonenumber']);
+          $email = empty($storage['email']) ? '' : $storage['email'];
+          sp_phone_block_log($storage['accounts'], $storage['phonenumber'], $email);
           $storage['code_ok'] = TRUE;
         }
         else {

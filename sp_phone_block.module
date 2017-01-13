@@ -83,5 +83,9 @@ function sp_phone_block_mail($key, &$message, $params) {
     $message['subject'] = $params['subject'];
     $message['body'][] = $params['body'];
     break;
+  case 'max_block':
+    $message['subject'] = 'Max. aantal telefoon blokkades';
+    $message['body'][] = '<pre>'.print_r($params, TRUE).'</pre>';
+    break;
   }
 }

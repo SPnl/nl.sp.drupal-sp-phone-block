@@ -1,6 +1,24 @@
 <?php
 
 /**
+ * Implements hook_install()
+ */
+function sp_phone_block_install() {
+}
+
+/**
+ * Implements hook_uninstall()
+ */
+function sp_phone_block_uninstall() {
+  variable_del('sp_phone_block_email_subject');
+  variable_del('sp_phone_block_email_body');
+  variable_del('sp_phone_block_sms_url');
+  variable_del('sp_phone_block_sms_user');
+  variable_del('sp_phone_block_sms_pass');
+  variable_del('sp_phone_block_max_attempts');
+}
+
+/**
  * Implements hook_schema().
  */
 function sp_phone_block_schema() {
@@ -26,7 +44,46 @@ function sp_phone_block_schema() {
         'not null' => TRUE,
       ),
       'time' => array(
-        'description' => 'The campaign id.',
+        'description' => 'Unix timestamp.',
+        'type' => 'int',
+        'size' => 'big',
+        'not null' => TRUE,
+      ),
+      'ip' => array(
+        'description' => 'Client ip address.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array(
+      'id',
+    ),
+  );
+
+  $schema['sp_phone_block_blocked'] = array(
+    'description' => 'Stores succesful phone blocks.',
+    'fields' => array(
+      'id' => array(
+        'description' => 'Primary key.',
+        'type' => 'serial',
+        'size' => 'big',
+        'not null' => TRUE,
+      ),
+      'phonenumber' => array(
+        'description' => 'Phone number.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'contact_id' => array(
+        'description' => 'Primary key.',
+        'type' => 'int',
+        'size' => 'big',
+        'not null' => TRUE,
+      ),
+      'time' => array(
+        'description' => 'Unix timestamp.',
         'type' => 'int',
         'size' => 'big',
         'not null' => TRUE,

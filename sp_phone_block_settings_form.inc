@@ -11,6 +11,7 @@ function sp_phone_block_general_settings_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => 'Onderwerp',
     '#default_value' => variable_get('sp_phone_block_email_subject'),
+    '#required' => TRUE,
   );
 
   $default = variable_get('sp_phone_block_email_body',  array());
@@ -20,6 +21,7 @@ function sp_phone_block_general_settings_form($form, &$form_state) {
     '#description' => 'De tekst [code] wordt vervangen door de bevestig code.',
     '#format' => isset($default['format']) ? $default['format'] : NULL,
     '#default_value' => isset($default['value']) ? $default['value'] : '',
+    '#required' => TRUE,
   );
 
   $site_mail = variable_get('site_mail', ini_get('sendmail_from'));
@@ -27,6 +29,7 @@ function sp_phone_block_general_settings_form($form, &$form_state) {
     '#type' => 'emailfield',
     '#title' => 'Afzend e-mailadres',
     '#default_value' => variable_get('sp_phone_block_email_from',  $site_mail),
+    '#required' => TRUE,
   );
 
   $form['sms'] = array(
@@ -55,19 +58,13 @@ function sp_phone_block_general_settings_form($form, &$form_state) {
     '#title'         => 'Wachtwoord',
     '#default_value' => variable_get('sp_phone_block_sms_pass', ''),
     '#description'   => 'Wachtwoord voor de SMS-dienst',
-    '#required'      => true,
   );
 
   $form['sp_phone_block_max_attempts'] = array(
     '#type' => 'numberfield',
     '#title' => 'Maximaal aantal pogingen per uur',
-    '#default_value' => variable_get('sp_phone_block_max_attempts',  0),
+    '#default_value' => variable_get('sp_phone_block_max_attempts',  3),
   );
-
-  return system_settings_form($form);
-}
-
-function sp_phone_block_text_settings_form($form, &$form_state) {
 
   return system_settings_form($form);
 }

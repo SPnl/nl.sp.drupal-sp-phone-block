@@ -39,17 +39,6 @@ function sp_phone_block_menu() {
     'type' => MENU_DEFAULT_LOCAL_TASK,
   );
 
-  $items['admin/config/sp/phone_block/texts'] = array(
-    'title' => 'SP phone block tekst instellingen',
-    'description' => 'Stel de feedbackteksten e.d. in.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('sp_phone_block_text_settings_form'),
-    'access callback' => 'user_access',
-    'access arguments' => array('administer access control'),
-    'file' => 'sp_phone_block_settings_form.inc',
-    'type' => MENU_LOCAL_TASK,
-  );
-
   return $items; 
 }
 
@@ -63,6 +52,17 @@ function sp_phone_block_entity_info() {
     'entity class' => 'Entity',
     'controller class' => 'EntityAPIController',
     'base table' => 'sp_phone_block_attempt',
+    'entity keys' => array(
+      'id' => 'id',
+    ),
+    'fieldable' => FALSE,
+  );
+
+  $info['phoneblock'] = array(
+    'label' => 'Succesful phone block',
+    'entity class' => 'Entity',
+    'controller class' => 'EntityAPIController',
+    'base table' => 'sp_phone_block_blocked',
     'entity keys' => array(
       'id' => 'id',
     ),

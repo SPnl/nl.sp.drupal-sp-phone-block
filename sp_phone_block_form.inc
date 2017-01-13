@@ -11,89 +11,96 @@ function sp_phone_block_form($form, &$form_state) {
   $form['#suffix'] = '</div>';
 
 
-  // Check if access limit is reached.
-  if (sp_phone_block_check_attempt_limit() <= variable_get('sp_phone_block_max_attempts', 0)) {
-  
-    if (!empty($storage['message'])) {
-      $form['message'] = array(
-        '#markup' => '<div class="messages ' . $storage['message']['type'] . '">' . $storage['message']['value'] . '</div>',
-      );
-      unset($storage['message']);
-    }
-
-    // Get phonenumber.
-    if (empty($storage['phonenumber'])) {
-      $form['intro'] = array(
-        '#markup' => '<p>Wilt u niet meer gebeld worden, vul dan hieronder uw telefoonnummer in.</p>',
-      );
-
-      $form['phonenumber'] = array(
-        '#type' => 'telfield',
-        '#title' => 'Telefoonnummer',
-      );
-
-      $form['submit_phone'] = array(
-        '#type' => 'submit',
-        '#value' => 'Verder',
-      );
-    }
-
-    // Get email.
-    if (
-      isset($storage['send_code_to']) &&
-      $storage['send_code_to'] === 'email' &&
-      empty($storage['code_send'])
-    ) {
-      $form['intro'] = array(
-        '#markup' => '<p>Om u uit te schrijven sturen wij u een e-mail met daarin een bevestigingscode. Naar welk e-mailadres mogen we deze code sturen?</p>',
-      );
-
-      $form['email'] = array(
-        '#type' => 'emailfield',
-        '#title' => 'E-mailadres',
-      );
-
-      $form['submit_email'] = array(
-        '#type' => 'submit',
-        '#value' => 'Verder',
-      );
-    }
-
-    // Check code.
-    if (
-      isset($storage['code_send']) &&
-      empty($storage['code_ok'])
-    ) {
-      $trans = array(
-        'phone' => 'mobile',
-        'email' => 'email',
-      );
-
-      $form['intro'] = array(
-        '#markup' => '<p>We hebben u zojuis per ' . $trans[$storage['send_code_to']] . ' een code toegestuurd. Vul deze hieronder in.</p>',
-      );
-
-      $form['code'] = array(
-        '#type' => 'textfield',
-        '#title' => 'Code',
-      );
-
-      $form['submit_code'] = array(
-        '#type' => 'submit',
-        '#value' => 'Verder',
-      );
-    }
-
-    // Code ok feedback.
-    if (!empty($storage['code_ok'])) {
-      $form['feedback'] = array(
-        '#markup' => '<p>Uw telefoonnummer is geblokkeerd, u zal niet meer gebeld worden.</p>',
-      );
-    }
+  // Check if module is configured.
+  if (empty(variable_get('sp_phone_block_sms_pass', ''))) {
+    $form['feedback'] = array(
+      '#markup' => '<div class="messages error">Configureer de module: <a href="/admin/config/sp/phone_block">instellingen</a>.</div>',
+    );
+    return $form;
   }
-  else {
+
+  // Check if access limit is reached.
+  if (sp_phone_block_check_attempt_limit() > variable_get('sp_phone_block_max_attempts', 0)) {
     $form['feedback'] = array(
       '#markup' => '<div class="messages error"><p>U heeft het maximale aantal pogingen bereikt, probeert u het over enige tijd nogmaals.</p></div>',
+    );
+    return $form;
+  }
+
+  if (!empty($storage['message'])) {
+    $form['message'] = array(
+      '#markup' => '<div class="messages ' . $storage['message']['type'] . '">' . $storage['message']['value'] . '</div>',
+    );
+    unset($storage['message']);
+  }
+
+  // Get phonenumber.
+  if (empty($storage['phonenumber'])) {
+    $form['intro'] = array(
+      '#markup' => '<p>Wilt u niet meer gebeld worden, vul dan hieronder uw telefoonnummer in.</p>',
+    );
+
+    $form['phonenumber'] = array(
+      '#type' => 'telfield',
+      '#title' => 'Telefoonnummer',
+    );
+
+    $form['submit_phone'] = array(
+      '#type' => 'submit',
+      '#value' => 'Verder',
+    );
+  }
+
+  // Get email.
+  if (
+    isset($storage['send_code_to']) &&
+    $storage['send_code_to'] === 'email' &&
+    empty($storage['code_send'])
+  ) {
+    $form['intro'] = array(
+      '#markup' => '<p>Om u uit te schrijven sturen wij u een e-mail met daarin een bevestigingscode. Naar welk e-mailadres mogen we deze code sturen?</p>',
+    );
+
+    $form['email'] = array(
+      '#type' => 'emailfield',
+      '#title' => 'E-mailadres',
+    );
+
+    $form['submit_email'] = array(
+      '#type' => 'submit',
+      '#value' => 'Verder',
+    );
+  }
+
+  // Check code.
+  if (
+    isset($storage['code_send']) &&
+    empty($storage['code_ok'])
+  ) {
+    $trans = array(
+      'phone' => 'mobile',
+      'email' => 'email',
+    );
+
+    $form['intro'] = array(
+      '#markup' => '<p>We hebben u zojuis per ' . $trans[$storage['send_code_to']] . ' een code toegestuurd. Vul deze hieronder in.</p>',
+    );
+
+    $form['code'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Code',
+    );
+
+    $form['submit_code'] = array(
+      '#type' => 'submit',
+      '#value' => 'Verder',
+    );
+  }
+
+  // Code ok feedback.
+  if (!empty($storage['code_ok'])) {
+    $form['feedback'] = array(
+      '#markup' => '<p>Uw telefoonnummer is geblokkeerd, u zal niet meer gebeld worden.</p>',
     );
   }
 
@@ -217,6 +224,7 @@ function sp_phone_block_form_submit($form, &$form_state) {
     case 'submit_code':
       if ($values['code'] == $storage['code']) {
         if (sp_phone_block_block_phone($storage['accounts'])) {
+          sp_phone_block_log($storage['accounts'], $storage['phonenumber']);
           $storage['code_ok'] = TRUE;
         }
         else {

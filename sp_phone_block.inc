@@ -127,3 +127,16 @@ function sp_phone_block_block_phone($accounts) {
   }
   return TRUE;
 }
+
+function sp_phone_block_log($accounts, $phonenumber) {
+  foreach ($accounts as $contact_id) {
+    $phoneblock = entity_create('phoneblock', array(
+      'phonenumber' => $phonenumber,
+      'contact_id' => $contact_id,
+      'time' => time(),
+      'ip' => ip_address(),
+    ));
+    $result = entity_save('phoneblock', $phoneblock);
+  }
+  return $result;
+}

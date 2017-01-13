@@ -35,7 +35,7 @@ function sp_phone_block_form($form, &$form_state) {
   }
 
   // Get phonenumber.
-  if (empty($storage['phonenumber'])) {
+  if (empty($storage['accounts'])) {
     $form['intro'] = array(
       '#markup' => '<p>Wilt u niet meer gebeld worden, vul dan hieronder uw telefoonnummer in.</p>',
     );

@@ -133,9 +133,21 @@ function sp_phone_block_form_validate($form, &$form_state) {
       break;
     case 'submit_email':
       $values['email'] = trim($values['email']);
-      if (!valid_email_address($values['email'])) {
-        form_set_error('email', 'Vul een geldig e-mailadres in.');
+
+      // Check email.
+      if (valid_email_address($values['email'])) {
+        $email_errors = _sp_email_verify_check($values['email']);
+        if (!empty($email_errors)) {
+          $mail_error = TRUE;
+        }
       }
+      else {
+        $mail_error = TRUE;
+      }
+      if (!empty($mail_error)) {
+        form_set_error('email', 'Vul een geldig e-mail adres in. Als het adres geldig is, maar desondanks niet geaccepteerd wordt, neem dan contact op met webmaster@sp.nl.');
+      }
+
       break;
     case 'submit_code':
       $values['code'] = trim($values['code']);

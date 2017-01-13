@@ -29,7 +29,7 @@ function sp_phone_block_menu() {
     'weight' => -20,
     'page callback' => 'drupal_get_form',
     'page arguments' => array('sp_phone_block_general_settings_form'),
-    'access callback' => 'user_access',
+    'access callback' => 'sprbs_access_check',
     'access arguments' => array('administer access control'),
     'file' => 'sp_phone_block_settings_form.inc',
     'type' => MENU_NORMAL_ITEM,
@@ -39,8 +39,7 @@ function sp_phone_block_menu() {
     'title' => 'SP phone block algemene instellingen',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('sp_phone_block_general_settings_form'),
-    'access callback' => 'user_access',
-    'access arguments' => array('administer access control'),
+    'access callback' => 'sprbs_access_check',
     'file' => 'sp_phone_block_settings_form.inc',
     'type' => MENU_DEFAULT_LOCAL_TASK,
   );

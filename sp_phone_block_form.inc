@@ -40,8 +40,9 @@ function sp_phone_block_form($form, &$form_state) {
 
   // Get phonenumber.
   if (empty($storage['accounts'])) {
+    $campaign_name = variable_get('sp_phone_block_campaign_name', ' ... ');
     $form['intro'] = array(
-      '#markup' => '<p>Wilt u niet meer gebeld worden, vul dan hieronder uw telefoonnummer in.</p>',
+      '#markup' => '<p>Wilt u niet meer gebeld worden door ' . $campaign_name . ', vul dan hieronder uw telefoonnummer in.</p>',
     );
 
     $form['phonenumber'] = array(
@@ -62,7 +63,7 @@ function sp_phone_block_form($form, &$form_state) {
     empty($storage['code_send'])
   ) {
     $form['intro'] = array(
-      '#markup' => '<p>Om u uit te schrijven sturen wij u een e-mail met daarin een bevestigingscode. Naar welk e-mailadres mogen we deze code sturen?</p>',
+      '#markup' => '<p>Om uit schrijven sturen wij u een e-mail met daarin een bevestigingscode. Naar welk e-mailadres mogen we deze code sturen?</p>',
     );
 
     $form['email'] = array(

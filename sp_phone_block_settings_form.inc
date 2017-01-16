@@ -2,6 +2,25 @@
 
 function sp_phone_block_general_settings_form($form, &$form_state) {
 
+  $form['general_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Algemene instellingen',
+  );
+
+  $form['general_settings']['sp_phone_block_campaign_name'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Naam campagne:<br/>Ik wil niet meer gebeld worden door ...',
+    '#description' => 'Vul de naam van de campagne in, inclusief lidwoord.',
+    '#required' => TRUE,
+    '#default_value' => variable_get('sp_phone_block_campaign_name'),
+  );
+
+  $form['general_settings']['sp_phone_block_max_attempts'] = array(
+    '#type' => 'numberfield',
+    '#title' => 'Maximaal aantal pogingen per uur',
+    '#default_value' => variable_get('sp_phone_block_max_attempts',  3),
+  );
+
   $form['email_settings'] = array(
     '#type' => 'fieldset',
     '#title' => 'E-mailinstellingen',
@@ -58,12 +77,7 @@ function sp_phone_block_general_settings_form($form, &$form_state) {
     '#title'         => 'Wachtwoord',
     '#default_value' => variable_get('sp_phone_block_sms_pass', ''),
     '#description'   => 'Wachtwoord voor de SMS-dienst',
-  );
-
-  $form['sp_phone_block_max_attempts'] = array(
-    '#type' => 'numberfield',
-    '#title' => 'Maximaal aantal pogingen per uur',
-    '#default_value' => variable_get('sp_phone_block_max_attempts',  3),
+    '#required'      => true,
   );
 
   return system_settings_form($form);

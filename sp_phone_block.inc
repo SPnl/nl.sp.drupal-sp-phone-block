@@ -20,6 +20,7 @@ function sp_phone_block_check_attempt_limit() {
 function sp_phone_block_get_civi_accounts($phonenumber) {
   $phonenumber = preg_replace('/[^0-9]/', '', $phonenumber);
   $phonepart = substr($phonenumber, -9);
+  set_time_limit(0);
   $spcivi = \SPCivi::getInstance();
   $params = array(
     'option.limit'          => 9999,

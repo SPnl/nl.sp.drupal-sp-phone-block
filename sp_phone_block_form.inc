@@ -141,7 +141,7 @@ function sp_phone_block_form_validate($form, &$form_state) {
 
       // Check email.
       if (valid_email_address($values['email'])) {
-        $email_errors = _sp_email_verify_check($values['email']);
+        $email_errors = sp_validate_email($values['email']);
         if (!empty($email_errors)) {
           $mail_error = TRUE;
         }

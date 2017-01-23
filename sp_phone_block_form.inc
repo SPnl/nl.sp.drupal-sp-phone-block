@@ -14,6 +14,9 @@ function sp_phone_block_form($form, &$form_state) {
   $form['#prefix'] = '<div id="sp-phone-block-ajax-form">';
   $form['#suffix'] = '</div>';
 
+  $form['#attached']['css'] = array(
+    drupal_get_path('module', 'sp_phone_block') . '/sp_phone_block.css',
+  );
 
   // Check if module is configured.
   if (empty(variable_get('sp_phone_block_sms_pass', ''))) {

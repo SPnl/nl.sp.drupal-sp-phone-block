@@ -147,7 +147,7 @@ function sp_phone_block_log($accounts, $phonenumber, $email = NULL) {
 }
 
 function sp_phone_block_redirect() {
-  drupal_goto('/niet-meer-bellen');
+  drupal_goto('/belmeniet');
 }
 
 function sp_phone_block_email_blocked_number($email) {

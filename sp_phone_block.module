@@ -8,7 +8,7 @@
 function sp_phone_block_menu() {
   $items = array();
 
-  $items['niet-meer-bellen'] = array(
+  $items['belmeniet'] = array(
     'title' => 'Bel mij niet meer',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('sp_phone_block_form'),
@@ -16,11 +16,21 @@ function sp_phone_block_menu() {
     'access callback' => TRUE,
   );
 
-  $items['nietmeerbellen'] = array(
-    'title' => 'Bel mij niet meer',
-    'page callback' => 'sp_phone_block_redirect',
-    'access callback' => TRUE,
+  $redirects = array(
+    'bel-me-niet',
+    'bel_me_niet',
+    'nietmeerbellen',
+    'niet-meer-bellen',
+    'niet_meer_bellen',
   );
+
+  foreach ($redirects as $redirect) {
+    $items[$redirect] = array(
+      'title' => 'Bel mij niet meer',
+      'page callback' => 'sp_phone_block_redirect',
+      'access callback' => TRUE,
+    );
+  }
 
   $items['admin/config/sp/phone_block'] = array(
     'title' => 'SP phone block',

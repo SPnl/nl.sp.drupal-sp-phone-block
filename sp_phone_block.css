@@ -1,4 +1,5 @@
-#sp-phone-block-form {
+#sp-phone-block-form,
+.page-belmeniet .content-header {
   margin: 0 auto;
   max-width: 600px;
 }

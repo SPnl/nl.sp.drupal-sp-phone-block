@@ -51,11 +51,12 @@ function sp_phone_block_form($form, &$form_state) {
     $form['phonenumber'] = array(
       '#type' => 'telfield',
       '#title' => 'Telefoonnummer',
+      '#size' => 10,
     );
 
     $form['submit_phone'] = array(
       '#type' => 'submit',
-      '#value' => 'Verder',
+      '#value' => 'Indienen',
     );
   }
 
@@ -91,7 +92,7 @@ function sp_phone_block_form($form, &$form_state) {
     );
 
     $form['intro'] = array(
-      '#markup' => '<p>We hebben u zojuis per ' . $trans[$storage['send_code_to']] . ' een code toegestuurd. Vul deze hieronder in.</p>',
+	    '#markup' => '<p>We hebben u zojuist per ' . $trans[$storage['send_code_to']] . ' een code toegestuurd.</p><p>Vul deze hieronder in om uw nummer te laten blokkeren.</p>',
     );
 
     $form['code'] = array(

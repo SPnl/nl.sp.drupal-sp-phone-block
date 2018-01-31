@@ -18,6 +18,11 @@ function sp_phone_block_form($form, &$form_state) {
     drupal_get_path('module', 'sp_phone_block') . '/sp_phone_block.css',
   );
 
+  $form['#attributes'] = array(
+    'class' => array('sp-phone-block-form'),
+  );
+
+
   // Check if module is configured.
   if (empty(variable_get('sp_phone_block_sms_pass', ''))) {
     $form['feedback'] = array(
